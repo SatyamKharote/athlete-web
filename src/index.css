@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "InterVariable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
+  /* Surfaces */
+  --color-bg: #0a0e13;
+  --color-surface: #10151c;
+  --color-surface-2: #161c25;
+  --color-surface-3: #1d2530;
+  --color-line: #1f2732;
+  --color-line-strong: #2b3542;
+
+  /* Text */
+  --color-fg: #eef1f5;
+  --color-muted: #8b95a4;
+  --color-subtle: #5d6876;
+
+  /* Single accent + status colours */
+  --color-accent: #c6f432;
+  --color-accent-strong: #d6ff4f;
+  --color-accent-ink: #0a0e13;
+  --color-warn: #ff8a3d;
+  --color-danger: #f2615c;
+  --color-success: #3ddc97;
+
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+  --animate-fade-in: fade-in 160ms ease-out;
+  --animate-pop-in: pop-in 180ms cubic-bezier(0.2, 0.9, 0.3, 1.1);
+  --animate-slide-up: slide-up 220ms cubic-bezier(0.2, 0.9, 0.3, 1);
+
+  @keyframes shimmer {
+    0% { opacity: 0.55; }
+    50% { opacity: 1; }
+    100% { opacity: 0.55; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pop-in {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+    min-height: 100dvh;
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-accent) 35%, transparent);
+    color: var(--color-fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Native date picker icon should be visible on a dark surface. */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.75);
+    cursor: pointer;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* RPE slider */
+  .range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      to right,
+      var(--range-color, var(--color-accent)) 0%,
+      var(--range-color, var(--color-accent)) var(--range-fill, 50%),
+      var(--color-surface-3) var(--range-fill, 50%)
+    );
+    cursor: pointer;
+  }
+  .range:focus-visible {
+    outline-offset: 6px;
+  }
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 9999px;
+    background: var(--color-fg);
+    border: 4px solid var(--range-color, var(--color-accent));
+    box-shadow: 0 2px 10px rgb(0 0 0 / 0.4);
+    transition: transform 120ms ease;
+  }
+  .range::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+  }
+  .range::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    background: var(--color-fg);
+    border: 4px solid var(--range-color, var(--color-accent));
+  }
+}
